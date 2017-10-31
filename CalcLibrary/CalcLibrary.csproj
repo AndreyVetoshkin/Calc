@@ -41,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculator.cs" />
+    <Compile Include="IOperation.cs" />
+    <Compile Include="Operations\BaseOperation.cs" />
+    <Compile Include="Operations\SubOperation.cs" />
+    <Compile Include="Operations\SumOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

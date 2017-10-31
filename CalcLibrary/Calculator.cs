@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalcLibrary.Operations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,17 @@ namespace CalcLibrary
 {
     public class Calculator
     {
+        public Calculator()
+        {
+            Operations = new List<IOperation> {
+            new SumOperation(),
+            new SubOperation()
+            };
+
+        }
+        public IList<IOperation> Operations { get; set; }
+
+        #region Старые приваты
         private bool ParseToDouble(string x, string y, out double dvalue1, out double dvalue2)
         {
             double xd, yd;
@@ -24,6 +36,9 @@ namespace CalcLibrary
                 return false;
             }
         }
+        #endregion
+
+        #region Устаревшее
         public string Sum(string x, string y)
         {
             double xd;
@@ -33,7 +48,10 @@ namespace CalcLibrary
             double yd;
             if (!Double.TryParse(y, out yd))
                 return "error";
-            var result = xd + yd;
+
+            var sum = new SumOperation();
+
+            var result = sum.Execute(new[] { xd, yd });
 
             return $"{result}";
         }
@@ -121,5 +139,6 @@ namespace CalcLibrary
             }
             return result;
         }
+        #endregion
     }
 }

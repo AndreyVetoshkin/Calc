@@ -1,7 +1,9 @@
 ﻿using CalcLibrary;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,132 +14,74 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Calculator");
-
+            var opers = GetLibraries();
             var calc = new Calculator();
-
-            if (args.Count() == 3)
+            
+            foreach(var oper in opers)
             {
-                var operation = args[0];
-                var x = args[1];
-                var y = args[2];
-                var result = "";
-
-                if (operation == "sum")
-                {
-                    result = calc.Sum(x, y);
-                }
-
-                if (operation == "dsum")
-                {
-                    result = calc.dSum(x, y).ToString();
-                }
-
-                if (operation == "sub")
-                {
-                    result = calc.Sub(x, y).ToString();
-                }
-
-                if (operation == "mul")
-                {
-                    result = calc.Mul(x, y).ToString();
-                }
-
-                if (operation == "div")
-                {
-                    result = calc.Div(x, y).ToString();
-                }
-                Console.WriteLine(result);
-                Console.ReadKey();
+                calc.Operations.Add(oper);
             }
-
-            if (args.Count() == 2)
+            var count = 0;
+            foreach (var oper in calc.Operations)
             {
-                var operation = args[0];
-                var x = args[1];
-                var result = "";
-                if (operation == "sqr")
-                {
-                    result = calc.Sqr(x).ToString();
-                }
-
-                if (operation == "sqrt")
-                {
-                    result = calc.Sqrt(x).ToString();
-                }
-                Console.WriteLine(result);
-                Console.ReadKey();
+                Console.WriteLine($"{++count}. {oper.Name}");
             }
-            if (args.Count() == 0)
+            Console.WriteLine("Select operation");
+            var operKey = Console.ReadLine();
+            var operId = Convert.ToInt32(operKey);
+            var operation = calc.Operations.ElementAt(operId - 1);
+
+            Console.WriteLine("Введите 1-й аргумент: ");
+            string x = Console.ReadLine();
+            Console.WriteLine("Введите 2-й аргумент: ");
+            string y = Console.ReadLine();
+
+            double xd;
+            if (!Double.TryParse(x, out xd))
+                Console.WriteLine("error");
+
+            double yd;
+            if (!Double.TryParse(y, out yd))
+                Console.WriteLine("error");
+
+            Console.WriteLine(operation.Execute(new[] { xd, yd }));
+            Console.ReadKey();
+        }
+
+        static IEnumerable<IOperation> GetLibraries()
+        {
+            var result = new List<IOperation>();
+            //найти текущую директорию
+            var dir = Environment.CurrentDirectory + "\\Exts";
+            if (!Directory.Exists(dir))
+                return result;
+            //загрузить все файлы *.dll
+            var files = Directory.GetFiles(dir, "*.dll");
+            foreach (var item in files)
             {
-                bool alive = true;
-                double dResult = 0.0;
-                while (alive)
+                //загрузить их
+                var dll = Assembly.LoadFrom(item);
+                //разобрать их по классам
+                var classes = dll.GetTypes();
+                //найти нужные классы
+                foreach(var cl in classes)
                 {
-                    // выводим список команд
-                    Console.WriteLine("1. Сложение");
-                    Console.WriteLine("2. Вычитание");
-                    Console.WriteLine("3. Умножение");
-                    Console.WriteLine("4. Деление");
-                    Console.WriteLine("5. Возведение в квадрат");
-                    Console.WriteLine("6. Извлечение квадратного корня");
-                    Console.WriteLine("7. Завершить работу\n");
-                    Console.WriteLine("Выберите операцию:");
-                    try
+                    var interfaces = cl.GetInterfaces();
+
+                    if(interfaces.Any(i => i == typeof(IOperation)))
                     {
-                        int command = Convert.ToInt32(Console.ReadLine());
-                        switch (command)
+                        var instance = Activator.CreateInstance(cl) as IOperation;
+                        if (instance != null)
                         {
-                            case 1:
-                                Console.WriteLine("Введите 1-й аргумент: ");
-                                string x = Console.ReadLine();
-                                Console.WriteLine("Введите 2-й аргумент: ");
-                                string y = Console.ReadLine();
-                                dResult = calc.dSum(x, y);
-                                break;
-                            case 2:
-                                Console.WriteLine("Введите 1-й аргумент: ");
-                                x = Console.ReadLine();
-                                Console.WriteLine("Введите 2-й аргумент: ");
-                                y = Console.ReadLine();
-                                dResult = calc.Sub(x, y);
-                                break;
-                            case 3:
-                                Console.WriteLine("Введите 1-й аргумент: ");
-                                x = Console.ReadLine();
-                                Console.WriteLine("Введите 2-й аргумент: ");
-                                y = Console.ReadLine();
-                                dResult = calc.Mul(x, y);
-                                break;
-                            case 4:
-                                Console.WriteLine("Введите 1-й аргумент: ");
-                                x = Console.ReadLine();
-                                Console.WriteLine("Введите 2-й аргумент: ");
-                                y = Console.ReadLine();
-                                dResult = calc.Div(x, y);
-                                break;
-                            case 5:
-                                Console.WriteLine("Введите аргумент: ");
-                                x = Console.ReadLine();
-                                dResult = calc.Sqr(x);
-                                break;
-                            case 6:
-                                Console.WriteLine("Введите аргумент: ");
-                                x = Console.ReadLine();
-                                dResult = calc.Sqrt(x);
-                                break;
-                            case 7:
-                                alive = false;
-                                continue;
+                            result.Add(instance);
                         }
-                        Console.WriteLine("\nРезультат операции: " + dResult + "\n");
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("\n" + ex.Message + "\n");
-                    }
+                    
                 }
+
+                
             }
+            return result;
         }
     }
 }
