@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace CalcLibrary.Operations
 {
-    public class SumOperation : BaseOperation
+    class SqrOperation : BaseOperation
     {
-        public override string Name
-        {
-            get
-            {
-                return "sum";
-            }
-        }
+        public override string Name => "sqr";
 
         public override int MinArgsCount => 1;
 
@@ -25,7 +19,12 @@ namespace CalcLibrary.Operations
                 Console.WriteLine($"Ошибка: аргументы не определены");
                 return 0;
             }
-            return args.Sum();
+            if (args.Count() > 1)
+            {
+                Console.WriteLine($"Ошибка: максимальное количество аргументов {MinArgsCount}");
+                return 0;
+            }
+            return args[0] * args[0];
         }
     }
 }

@@ -43,6 +43,10 @@
     <Compile Include="Calculator.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="Operations\BaseOperation.cs" />
+    <Compile Include="Operations\DivOperation.cs" />
+    <Compile Include="Operations\MulOperation.cs" />
+    <Compile Include="Operations\SqrOperation.cs" />
+    <Compile Include="Operations\SqrtOperation.cs" />
     <Compile Include="Operations\SubOperation.cs" />
     <Compile Include="Operations\SumOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

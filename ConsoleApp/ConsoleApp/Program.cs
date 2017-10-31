@@ -16,8 +16,8 @@ namespace ConsoleApp
         {
             var opers = GetLibraries();
             var calc = new Calculator();
-            
-            foreach(var oper in opers)
+
+            foreach (var oper in opers)
             {
                 calc.Operations.Add(oper);
             }
@@ -31,20 +31,10 @@ namespace ConsoleApp
             var operId = Convert.ToInt32(operKey);
             var operation = calc.Operations.ElementAt(operId - 1);
 
-            Console.WriteLine("Введите 1-й аргумент: ");
+            Console.WriteLine("Введите аргументы через пробел, если операция требует более одного аргумента: ");
             string x = Console.ReadLine();
-            Console.WriteLine("Введите 2-й аргумент: ");
-            string y = Console.ReadLine();
 
-            double xd;
-            if (!Double.TryParse(x, out xd))
-                Console.WriteLine("error");
-
-            double yd;
-            if (!Double.TryParse(y, out yd))
-                Console.WriteLine("error");
-
-            Console.WriteLine(operation.Execute(new[] { xd, yd }));
+            Console.WriteLine(operation.Execute(StringConverter(x)));
             Console.ReadKey();
         }
 
@@ -64,11 +54,11 @@ namespace ConsoleApp
                 //разобрать их по классам
                 var classes = dll.GetTypes();
                 //найти нужные классы
-                foreach(var cl in classes)
+                foreach (var cl in classes)
                 {
                     var interfaces = cl.GetInterfaces();
 
-                    if(interfaces.Any(i => i == typeof(IOperation)))
+                    if (interfaces.Any(i => i == typeof(IOperation)))
                     {
                         var instance = Activator.CreateInstance(cl) as IOperation;
                         if (instance != null)
@@ -76,12 +66,31 @@ namespace ConsoleApp
                             result.Add(instance);
                         }
                     }
-                    
-                }
 
-                
+                }
             }
             return result;
+        }
+
+        static double[] StringConverter(string args)
+        {
+            if (args == "")
+                return null;
+            string[] sArgs = args.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            double[] dArgs = new double[sArgs.Count()];
+            for (int i = 0; i < dArgs.Count(); i++)
+            {
+                try
+                {
+                    dArgs[i] = Convert.ToDouble(sArgs[i]);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
+            }
+            return dArgs;
         }
     }
 }

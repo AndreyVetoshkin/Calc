@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CalcLibrary.Operations
 {
-    public class SubOperation : BaseOperation
+    class MulOperation : BaseOperation
     {
-        public override string Name => "sub";
+        public override string Name => "mul";
 
         public override int MinArgsCount => 2;
 
@@ -24,10 +24,12 @@ namespace CalcLibrary.Operations
                 Console.WriteLine($"Ошибка: минимальное количество аргументов {MinArgsCount}");
                 return 0;
             }
+            if (args.Any(i => i == 0))
+                return 0;
             double result = args[0];
             for (int i = 1; i < args.Count(); i++)
             {
-                result -= args[i];
+                result *= args[i];
             }
             return result;
         }

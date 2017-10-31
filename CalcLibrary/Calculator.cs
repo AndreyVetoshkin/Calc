@@ -13,7 +13,11 @@ namespace CalcLibrary
         {
             Operations = new List<IOperation> {
             new SumOperation(),
-            new SubOperation()
+            new SubOperation(),
+            new MulOperation(),
+            new DivOperation(),
+            new SqrOperation(),
+            new SqrtOperation()
             };
 
         }
