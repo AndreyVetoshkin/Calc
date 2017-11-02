@@ -39,9 +39,8 @@
             this.lblResult = new System.Windows.Forms.Label();
             this.btnLike = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnsum = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.flowLayoutPanel1.SuspendLayout();
+            this.btnDislike = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnExit
@@ -131,32 +130,32 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Controls.Add(this.btnsum);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(54, 44);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(303, 110);
             this.flowLayoutPanel1.TabIndex = 14;
-            // 
-            // btnsum
-            // 
-            this.btnsum.Location = new System.Drawing.Point(3, 3);
-            this.btnsum.Name = "btnsum";
-            this.btnsum.Size = new System.Drawing.Size(75, 23);
-            this.btnsum.TabIndex = 0;
-            this.btnsum.Text = "sum";
-            this.btnsum.UseVisualStyleBackColor = true;
-            this.btnsum.Click += new System.EventHandler(this.btn_Click);
             // 
             // timer1
             // 
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnDislike
+            // 
+            this.btnDislike.Location = new System.Drawing.Point(239, 9);
+            this.btnDislike.Name = "btnDislike";
+            this.btnDislike.Size = new System.Drawing.Size(75, 23);
+            this.btnDislike.TabIndex = 15;
+            this.btnDislike.Text = "Dislike";
+            this.btnDislike.UseVisualStyleBackColor = true;
+            this.btnDislike.Click += new System.EventHandler(this.btnDislike_Click);
+            // 
             // WinFormsCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 362);
+            this.Controls.Add(this.btnDislike);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.btnLike);
             this.Controls.Add(this.lblResult);
@@ -173,7 +172,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "WinForms Calculator";
             this.Load += new System.EventHandler(this.WinFormsCalculator_Load);
-            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,8 +189,8 @@
         private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.Button btnLike;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button btnsum;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnDislike;
     }
 }
 
