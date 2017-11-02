@@ -16,7 +16,16 @@ namespace WinFormsCalculator
         private Calculator Calc { get; set; }
         private IList<string> Favorites { get; set; }
 
-        private IOperation CurrentSelectedOperation { get; set; }       
+        private IOperation CurrentSelectedOperation { get; set; }
+        private void Calculate()
+        {
+            timer1.Stop();
+            var inputData = StringConverter(tbInput.Text);
+
+            //вычислить
+            var result = CurrentSelectedOperation.Execute(inputData);
+            lblResult.Text = $"{result}";
+        }
 
         public WinFormsCalculator()
         {            
@@ -57,11 +66,9 @@ namespace WinFormsCalculator
                 return;
             }
             //получить входные данные
-            var inputData = StringConverter(tbInput.Text);
-            
+
             //вычислить
-            var result = CurrentSelectedOperation.Execute(inputData);
-            lblResult.Text = $"{result}";
+            Calculate();
         }
 
         private void cbOperation_SelectedIndexChanged(object sender, EventArgs e)
@@ -105,7 +112,7 @@ namespace WinFormsCalculator
 
             cbOperation.SelectedItem = Calc.Operations.FirstOrDefault(o => o.Name == button.Text);
 
-            btnCalc_Click(sender, e);
+            Calculate();
         }
 
         static double[] StringConverter(string args)
@@ -114,6 +121,24 @@ namespace WinFormsCalculator
                              .Select(s => s.ToDouble())
                              .ToArray();
             return result;
+        }
+
+        private void tbInput_Click(object sender, EventArgs e)
+        {
+            tbInput.SelectAll();
+        }
+
+        private void tbInput_KeyUp(object sender, KeyEventArgs e)
+        {
+            timer1.Stop();
+            timer1.Start();
+            if (e.KeyCode == Keys.Enter)
+                Calculate();          
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Calculate();
         }
     }
 }

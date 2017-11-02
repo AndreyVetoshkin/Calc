@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnExit = new System.Windows.Forms.Button();
             this.tbInput = new System.Windows.Forms.TextBox();
             this.lblInput = new System.Windows.Forms.Label();
@@ -39,6 +40,7 @@
             this.btnLike = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnsum = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +61,8 @@
             this.tbInput.Name = "tbInput";
             this.tbInput.Size = new System.Drawing.Size(352, 20);
             this.tbInput.TabIndex = 1;
+            this.tbInput.Click += new System.EventHandler(this.tbInput_Click);
+            this.tbInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbInput_KeyUp);
             // 
             // lblInput
             // 
@@ -143,6 +147,11 @@
             this.btnsum.UseVisualStyleBackColor = true;
             this.btnsum.Click += new System.EventHandler(this.btn_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // WinFormsCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -183,6 +192,7 @@
         private System.Windows.Forms.Button btnLike;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button btnsum;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
