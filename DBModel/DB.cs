@@ -107,9 +107,17 @@ namespace DBModel
             using (connection)
             {
                 // Вот тут не додумался как составить запрос чтобы получить операцию через параметры
+
                 SqlCommand command = new SqlCommand(
-                  "SELECT Id, Name, Args, Result, ExecTime FROM OperationHistory;",
+                  "SELECT Id, Name, Args, Result, ExecTime FROM OperationHistory WHERE Name = @Name AND Args = @Args;",
                   connection);
+
+                command.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar);
+                command.Parameters.Add("@Args", System.Data.SqlDbType.NVarChar);
+
+                command.Parameters["@Name"].Value = name;
+                command.Parameters["@Args"].Value = args;
+
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -129,7 +137,7 @@ namespace DBModel
                 }
                 reader.Close();
             }
-            result = operations.FirstOrDefault(o => o.Name == name && o.Args == args);
+            result = operations.FirstOrDefault();
             return result;
         }
 
@@ -172,7 +180,7 @@ namespace DBModel
             using (var connection = new SqlConnection(CONN))
             {
                 // create command object with SQL query and link to connection object
-                string sqlExpression = String.Format("DELETE  FROM Favorite WHERE Name = '{0}'", name);
+                string sqlExpression = String.Format("DELETE  FROM Favorite WHERE Name = N'{0}'", name);
                 SqlCommand command = new SqlCommand(sqlExpression, connection);   
 
                 // open sql connection
