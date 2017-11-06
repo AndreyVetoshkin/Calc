@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsCalculator", "WinFo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBModel", "DBModel\DBModel.csproj", "{E7BC6E70-A892-4669-8077-AD5D0986E425}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCalc", "WebCalc\WebCalc.csproj", "{1197B4A0-A647-4BEE-8929-5F0D195F3384}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E7BC6E70-A892-4669-8077-AD5D0986E425}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7BC6E70-A892-4669-8077-AD5D0986E425}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7BC6E70-A892-4669-8077-AD5D0986E425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1197B4A0-A647-4BEE-8929-5F0D195F3384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1197B4A0-A647-4BEE-8929-5F0D195F3384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1197B4A0-A647-4BEE-8929-5F0D195F3384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1197B4A0-A647-4BEE-8929-5F0D195F3384}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

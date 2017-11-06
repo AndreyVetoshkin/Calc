@@ -1,0 +1,23 @@
+﻿@model WebCalc.Models.OperViewModel
+@{
+    ViewBag.Title = "Calculator";
+
+    var operName = Model.OperName;
+    var args = Model.Args;
+    var result = Model.Result;
+
+}
+
+<h2>Calculator</h2>
+
+
+<form method="post" class = "form-inline">
+    @*<input class = "form-control" type="text" name="operName" value="@operName"/>*@
+    @Html.DropDownListFor(model => model.OperName, ViewBag.Operations as SelectList, new { @class = "form-control" });
+
+    <input class = "form-control" type="text" name="args" value="@args" />
+
+    <input class="btn btn-default" type="submit" value="Calc" />
+</form>
+
+@result

@@ -43,5 +43,13 @@ namespace WinFormsCalculator
             }
             return result;
         }
+
+        public static double[] StringConverter(string args)
+        {
+            var result = args.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                             .Select(s => s.ToDouble())
+                             .ToArray();
+            return result;
+        }
     }
 }
