@@ -1,0 +1,24 @@
+﻿@model IEnumerable<DBModel.Model.Favorite>
+
+@foreach (var item in Model)
+{
+    @Html.DisplayFor(modelItem => item)
+}
+
+<script type="text/javascript">
+    function LikeSubmit(elem) {
+
+        debugger;
+        var operName = $(elem).attr("value");
+        $("#OperName").val(operName);
+
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("FavRedir", "Calc")",
+            data: { _operName: operName }
+    })
+
+        $("form").submit;
+
+    }
+</script>

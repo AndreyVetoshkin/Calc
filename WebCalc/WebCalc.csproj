@@ -237,6 +237,9 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Calc\Index.cshtml" />
+    <Content Include="Views\Calc\Like.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ListFavorites.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Favorite.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -253,6 +256,10 @@
     <ProjectReference Include="..\CalcLibrary\CalcLibrary.csproj">
       <Project>{702F2524-A041-46E8-A64A-D7430471DED4}</Project>
       <Name>CalcLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBModel\DBModel.csproj">
+      <Project>{E7BC6E70-A892-4669-8077-AD5D0986E425}</Project>
+      <Name>DBModel</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

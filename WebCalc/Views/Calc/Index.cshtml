@@ -11,13 +11,34 @@
 <h2>Calculator</h2>
 
 
-<form method="post" class = "form-inline">
-    @*<input class = "form-control" type="text" name="operName" value="@operName"/>*@
-    @Html.DropDownListFor(model => model.OperName, ViewBag.Operations as SelectList, new { @class = "form-control" });
-
+<form method="post" class = "form-horizontal">
+    @Html.DropDownListFor(model => model.OperName, ViewBag.Operations as SelectList, new { @class = "form-control" })
+    
+    <div class="favorite">
+        @Html.DisplayFor(m=>m.Favorites, "ListFavorites")   
+    </div>
     <input class = "form-control" type="text" name="args" value="@args" />
 
     <input class="btn btn-default" type="submit" value="Calc" />
+    <input class="btn btn-default" type="button" onclick="Like()" value="Like" />
 </form>
 
 @result
+
+<script type="text/javascript">
+    function Like() {
+        debugger;
+        var operName = $("#OperName").val();
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("Like", "Calc")",
+            data: { operName: operName }
+    })
+    .done(function (btn) {
+        debugger;
+        if (!btn.failed) {
+            $(".favorite").append(btn)
+        }
+    });
+    }
+</script>

@@ -11,11 +11,11 @@ namespace WinFormsCalculator
 {
     public static class CalcHelper
     {
-        public static IEnumerable<IOperation> GetOperations()
+        public static IEnumerable<IOperation> GetOperations(string extsDir="")
         {
             var result = new List<IOperation>();
             //найти текущую директорию
-            var dir = Environment.CurrentDirectory + "\\Exts";
+            var dir = !string.IsNullOrWhiteSpace(extsDir) ? extsDir : Environment.CurrentDirectory + "\\Exts";
             if (!Directory.Exists(dir))
                 return result;
             //загрузить все файлы *.dll
@@ -46,10 +46,10 @@ namespace WinFormsCalculator
 
         public static double[] StringConverter(string args)
         {
-            var result = args.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                             .Select(s => s.ToDouble())
-                             .ToArray();
-            return result;
+                var result = args.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                 .Select(s => s.ToDouble())
+                                 .ToArray();
+                return result;
         }
     }
 }

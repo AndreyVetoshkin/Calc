@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StringExtension.cs" />
     <Compile Include="WinFormsCalculator.cs">
       <SubType>Form</SubType>
     </Compile>
