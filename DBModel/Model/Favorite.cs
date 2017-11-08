@@ -25,9 +25,11 @@ namespace DBModel.Model
             IsCustom = isCustom;
         }
 
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public DateTime CreationDate { get; set; }
-        public bool IsCustom { get; set; }
+        public virtual long Id { get; set; }
+        public virtual string Name { get; set; }
+        public virtual DateTime CreationDate { get; set; }
+        public virtual bool IsCustom { get; set; }
+
+        public virtual Operation Operation { get; set; }
     }
 }

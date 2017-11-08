@@ -1,2 +1,3 @@
 ﻿@model DBModel.Model.Favorite
-<input class="btn btn-default" type="button" onclick="LikeSubmit(this)" value="@Model.Name" />
+
+@Html.Partial("FavButton", Model.Name)

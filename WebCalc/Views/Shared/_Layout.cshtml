@@ -26,11 +26,12 @@
                     <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
                     <li>@Html.ActionLink("О программе", "About", "Home")</li>
                     <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
-                    <li>
-                        <div class="favorite">
-                            @Html.DisplayFor(m => m.Favorites, "ListFavorites")
-                        </div>
-                    </li>
+                    
+                        @foreach (var fav in Html.GetFavorites())
+                        {
+                        <li>@Html.ActionLink(fav.Operation.Name, "Index", "Calc", new { operName = fav.Name }, null)</li>
+                        }
+                    
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

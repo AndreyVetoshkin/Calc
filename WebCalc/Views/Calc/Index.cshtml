@@ -6,6 +6,7 @@
     var args = Model.Args;
     var result = Model.Result;
 
+    var error = ViewBag.Error as string;
 }
 
 <h2>Calculator</h2>
@@ -23,7 +24,12 @@
     <input class="btn btn-default" type="button" onclick="Like()" value="Like" />
 </form>
 
-@result
+<h3>@result</h3>
+
+@if (!string.IsNullOrWhiteSpace(error))
+{
+    <div class="alert alert-warning" role="alert">@(ViewBag.Error)</div>
+}
 
 <script type="text/javascript">
     function Like() {

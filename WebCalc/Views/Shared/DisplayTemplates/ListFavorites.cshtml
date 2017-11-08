@@ -11,14 +11,6 @@
         debugger;
         var operName = $(elem).attr("value");
         $("#OperName").val(operName);
-
-        $.ajax({
-            method: "POST",
-            url: "@Url.Action("FavRedir", "Calc")",
-            data: { _operName: operName }
-    })
-
         $("form").submit;
-
     }
 </script>

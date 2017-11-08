@@ -1,4 +1,6 @@
 ﻿using DBModel.Model;
+using DBModel.NHibernate;
+using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,62 +15,35 @@ namespace DBModel
         private const string CONN = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\work\Calc\DBModel\AppData\HypeDB.mdf; Integrated Security = True";
         public static bool AddFavorite(Favorite fav)
         {
-            using (var connection = new SqlConnection(CONN))
+            using (ISession session = NHHelper.OpenSession())
             {
-                // create command object with SQL query and link to connection object
-                SqlCommand command = new SqlCommand("INSERT INTO Favorite (Name, CreationDate, IsCustom) VALUES(@Name, @Now, @IsCustom)",
-                    connection);
-
-                // create your parameters
-                command.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar);
-                command.Parameters.Add("@Now", System.Data.SqlDbType.DateTime);
-                command.Parameters.Add("@IsCustom", System.Data.SqlDbType.Bit);
-
-                // set values to parameters from textboxes
-                command.Parameters["@Name"].Value = fav.Name;
-                command.Parameters["@Now"].Value = fav.CreationDate;
-                command.Parameters["@IsCustom"].Value = fav.IsCustom;
-
-                // open sql connection
-                connection.Open();
-
-                // execute the query and return number of rows affected, should be one
-                int rowsAffected = command.ExecuteNonQuery();
-                return rowsAffected > 0;
+                using (ITransaction tr = session.BeginTransaction())
+                {
+                    try
+                    {
+                        session.SaveOrUpdate(fav);
+                    }
+                    catch(Exception ex)
+                    {
+                        tr.Rollback();
+                        return false;
+                    }
+                    tr.Commit();
+                }
             }
+            return true;
         }
 
         public static IList<Favorite> GetFavorites()
         {
-            var result = new List<Favorite>();
-
-            var connection = new SqlConnection(CONN);
-            using (connection)
+            using (ISession session = NHHelper.OpenSession())
             {
-                SqlCommand command = new SqlCommand(
-                  "SELECT Id, Name, CreationDate, IsCustom FROM Favorite;",
-                  connection);
-                connection.Open();
+                var criteria = session.CreateCriteria<Favorite>();
 
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        var fav = new Favorite();
-                        fav.Id = reader.GetInt64(0);
-                        fav.Name = reader.GetString(1);
-                        fav.CreationDate = reader.IsDBNull(2) ? DateTime.MinValue : reader.GetDateTime(2);
-                        fav.IsCustom = reader.GetBoolean(3);
-                        result.Add(fav);
-                    }
-                }
-                reader.Close();
+                return criteria.List<Favorite>();
             }
-
-            return result;
         }
+    
 
         public static bool AddOperationHistory(OperationHistory item)
         {

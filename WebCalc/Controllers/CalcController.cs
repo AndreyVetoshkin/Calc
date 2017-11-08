@@ -15,13 +15,16 @@ namespace WebCalc.Controllers
     public class CalcController : Controller
     {
         private Calculator calc;
-        private IList<Favorite> favorites { get; set; }
-        IEnumerable<IOperation> opers;
+        private IList<Favorite> favorites { get; set; }      
         public CalcController()
         {
             calc = new Calculator();
             var extDir = HostingEnvironment.MapPath("~/App_Data");
-            opers = CalcHelper.GetOperations(extDir);
+
+            foreach (var op in CalcHelper.GetOperations(extDir))
+            {
+                calc.Operations.Add(op);
+            }
 
             favorites = DB.GetFavorites();
         }
@@ -32,14 +35,12 @@ namespace WebCalc.Controllers
         {
             var model = new OperViewModel();
             model.Favorites = favorites;
-            if (opers != null)
-                foreach (var item in opers)
-                    calc.Operations.Add(item);
+            
             ViewData.Model = model;
             if (string.IsNullOrWhiteSpace(operName))
                 ViewBag.Operations = new SelectList(calc.Operations, "Name", "Name");
             else
-                ViewBag.Operations = new SelectList(calc.Operations, "Name", "Name", calc.Operations.FirstOrDefault(o => o.Name == operName));
+                ViewBag.Operations = new SelectList(calc.Operations, "Name", "Name", operName);
             return View();
         }
 
@@ -48,9 +49,12 @@ namespace WebCalc.Controllers
         {
             model.Favorites = favorites;
 
-            if (opers != null)
-                foreach (var item in opers)
-                    calc.Operations.Add(item);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Error = "Все пропало...";
+                return View(model);
+            }
+
             var oper = calc.Operations.FirstOrDefault(o => o.Name == model.OperName);
             if (oper != null)
             {
@@ -71,12 +75,7 @@ namespace WebCalc.Controllers
             //сохранение операции в БД
             DB.AddFavorite(new Favorite(operName));
             //отображение кнопки
-            return PartialView("Like", operName);
-        }
-
-        public ActionResult FavRedir(string _operName)
-        {
-            return RedirectToAction("Index", "Calc", new { operName = _operName });
+            return PartialView("FavButton", operName);
         }
     }
 }
