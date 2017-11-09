@@ -12,14 +12,20 @@
 <h2>Calculator</h2>
 
 
-<form method="post" class = "form-horizontal">
-    @Html.DropDownListFor(model => model.OperName, ViewBag.Operations as SelectList, new { @class = "form-control" })
-    
-    <div class="favorite">
-        @Html.DisplayFor(m=>m.Favorites, "ListFavorites")   
-    </div>
-    <input class = "form-control" type="text" name="args" value="@args" />
+<form method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
 
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.DropDownListFor(m => m.OperName, ViewBag.Operations as SelectList, new { @class = "form-control" })
+
+    <div class="favorite">
+        @Html.DisplayFor(m => m.Favorites, "ListFavorites")
+    </div>
+    <div>
+        <input class="form-control" type="text" name="args" value="@args" style="display: inline-block" />
+        @Html.ValidationMessageFor(m => m.Args, "", new { @class= "text-danger", style = "display: inline-block"})
+    </div>
     <input class="btn btn-default" type="submit" value="Calc" />
     <input class="btn btn-default" type="button" onclick="Like()" value="Like" />
 </form>
@@ -39,7 +45,7 @@
             method: "POST",
             url: "@Url.Action("Like", "Calc")",
             data: { operName: operName }
-    })
+        })
     .done(function (btn) {
         debugger;
         if (!btn.failed) {

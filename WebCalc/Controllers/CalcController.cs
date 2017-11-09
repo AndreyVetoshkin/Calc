@@ -1,6 +1,7 @@
 ﻿using CalcLibrary;
 using DBModel;
 using DBModel.Model;
+using DBModel.NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,19 @@ using WinFormsCalculator;
 
 namespace WebCalc.Controllers
 {
+    [Authorize]
     public class CalcController : Controller
     {
         private Calculator calc;
-        private IList<Favorite> favorites { get; set; }      
+
+        private IList<Favorite> favorites
+        {
+            get
+            {
+                return DB.GetFavorites(HttpContext.User.Identity.Name);
+            }
+        }
+
         public CalcController()
         {
             calc = new Calculator();
@@ -25,8 +35,6 @@ namespace WebCalc.Controllers
             {
                 calc.Operations.Add(op);
             }
-
-            favorites = DB.GetFavorites();
         }
 
         // GET: Calc
@@ -48,7 +56,7 @@ namespace WebCalc.Controllers
         public ActionResult Index(OperViewModel model)
         {
             model.Favorites = favorites;
-
+            ViewBag.Operations = new SelectList(calc.Operations, "Name", "Name", model);
             if (!ModelState.IsValid)
             {
                 ViewBag.Error = "Все пропало...";
@@ -64,7 +72,7 @@ namespace WebCalc.Controllers
             {
                 ViewBag.Error = "Operation not found";
             }
-            ViewBag.Operations = new SelectList(calc.Operations, "Name", "Name", model);
+            
             return View(model);
         }
 
@@ -72,8 +80,15 @@ namespace WebCalc.Controllers
         {
             if (favorites.Any(f => f.Name == operName))
                 return Json(new { failed = true });
+
+            var fav = new Favorite(operName);
+            var currentUser = new UserManager().Get(HttpContext.User.Identity.Name);
+
+            fav.Operation = new OperationManager().Get(operName);
+            fav.User = currentUser;
+
             //сохранение операции в БД
-            DB.AddFavorite(new Favorite(operName));
+            DB.AddFavorite(fav);
             //отображение кнопки
             return PartialView("FavButton", operName);
         }

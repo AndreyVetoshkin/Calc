@@ -73,7 +73,7 @@ namespace WinFormsCalculator
         {
             InitializeComponent();
             favorites = new List<string>();
-            foreach (var fav in DB.GetFavorites())
+            foreach (var fav in DB.GetFavorites(""))
             {
                 AddFavoriteButton(fav.Name);
                 favorites.Add(fav.Name);

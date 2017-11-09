@@ -11,11 +11,12 @@ namespace WebCalc
 {
     public static class ViewExtensions
     {
+        [Obsolete("Not use", true)]
         public static MvcHtmlString GetFavoriteLinks(this HtmlHelper html)
         {
             var sb = new StringBuilder();
 
-            var favorites = DB.GetFavorites();
+            var favorites = DB.GetFavorites("");
 
             foreach (var item in favorites)
             {
@@ -27,7 +28,8 @@ namespace WebCalc
 
         public static IEnumerable<Favorite> GetFavorites(this HtmlHelper html)
         {
-            return DB.GetFavorites();
+            var username = html.ViewContext.HttpContext.User.Identity.Name;
+            return DB.GetFavorites(username);
         }
     }
 }

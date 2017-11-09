@@ -31,5 +31,7 @@ namespace DBModel.Model
         public virtual bool IsCustom { get; set; }
 
         public virtual Operation Operation { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

@@ -12,6 +12,7 @@
     <property name="IsCustom" />
 
     <many-to-one name="Operation" class="Operation" lazy="false"/>
+    <many-to-one name="User" class="User" column="UserId" lazy="false"/>
   </class>
 
 </hibernate-mapping>

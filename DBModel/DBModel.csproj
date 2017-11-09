@@ -80,7 +80,10 @@
     <Compile Include="Model\Operation.cs" />
     <Compile Include="Model\Favorite.cs" />
     <Compile Include="Model\OperationHistory.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="NHibernate\NHHelper.cs" />
+    <Compile Include="NHibernate\OperationManager.cs" />
+    <Compile Include="NHibernate\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +94,10 @@
     <Content Include="NHibernate\hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="NHibernate\Mapping\Operation.hbm.xml" />
+    <EmbeddedResource Include="NHibernate\Mapping\User.hbm.xml" />
+    <EmbeddedResource Include="NHibernate\Mapping\Operation.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="NHibernate\Mapping\Favorite.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -23,7 +23,7 @@ namespace DBModel
                     {
                         session.SaveOrUpdate(fav);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         tr.Rollback();
                         return false;
@@ -34,16 +34,24 @@ namespace DBModel
             return true;
         }
 
+        [Obsolete("Используйте GetFavorites(string username). Данный метод будет удален в следующей версии", false)]
         public static IList<Favorite> GetFavorites()
+        {
+            return new List<Favorite>();
+        }
+
+        public static IList<Favorite> GetFavorites(string username)
         {
             using (ISession session = NHHelper.OpenSession())
             {
-                var criteria = session.CreateCriteria<Favorite>();
+                var query = session.QueryOver<Favorite>()
+                    .JoinQueryOver(f => f.User)
+                        .And(u => u.Login == username);
 
-                return criteria.List<Favorite>();
+                return query.List<Favorite>();
             }
         }
-    
+
 
         public static bool AddOperationHistory(OperationHistory item)
         {
@@ -88,7 +96,7 @@ namespace DBModel
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
-                
+
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -148,7 +156,7 @@ namespace DBModel
             {
                 // create command object with SQL query and link to connection object
                 string sqlExpression = String.Format("DELETE  FROM Favorite WHERE Name = '{0}'", name);
-                SqlCommand command = new SqlCommand(sqlExpression, connection);   
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
 
                 // open sql connection
                 connection.Open();
